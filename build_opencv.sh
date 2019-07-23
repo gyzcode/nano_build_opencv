@@ -4,9 +4,9 @@
 set -e
 
 # change default constants here:
-readonly PREFIX=/usr/local  # install prefix, (can be ~/.local for a user install)
+readonly PREFIX=/usr/local/opencv4  # install prefix, (can be ~/.local for a user install)
 readonly DEFAULT_VERSION=4.1.0  # controls the default version (gets reset by the first argument)
-readonly JOBS=1  # controls the number of jobs
+readonly JOBS=4  # controls the number of jobs
 # (recommend leaving JOBS to 1 since each  `cc1plus` process towards the end of
 # the build consumes close to 1.7G memory) If you have an external drive connected
 # as swap you can increase this and parts will build faster, while others might
@@ -40,7 +40,8 @@ setup () {
 
 git_source () {
     echo "Getting version '$1' of OpenCV"
-    git clone --branch "$1" https://github.com/opencv/opencv.git
+    #git clone --branch "$1" https://github.com/opencv/opencv.git
+    git clone --branch "dev" https://github.com/gyzcode/opencv.git
     git clone --branch "$1" https://github.com/opencv/opencv_contrib.git
 }
 
@@ -60,6 +61,7 @@ install_dependencies () {
         libdc1394-22-dev \
         libgstreamer1.0-dev \
         libgtk2.0-dev \
+	libgtkglext1-dev \
         libjpeg-dev \
         libpng-dev \
         libswscale-dev \
@@ -77,6 +79,14 @@ install_dependencies () {
 configure () {
     local CMAKEFLAGS="
         -D BUILD_EXAMPLES=OFF
+	-D OPENCV_GENERATE_PKGCONFIG=ON
+	-D BUILD_DOCS=OFF
+	-D BUILD_WITH_DEBUG_INFO=OFF
+	-D ENABLE_CXX11=ON
+       	-D ENABLE_NEON=ON
+       	-D WITH_TBB=ON
+       	-D WITH_OPENGL=ON
+       	-D WITH_GTK_2_X=ON
         -D BUILD_opencv_python2=ON
         -D BUILD_opencv_python3=ON
         -D CMAKE_INSTALL_PREFIX=${PREFIX}
