@@ -89,6 +89,7 @@ configure () {
        	-D WITH_GTK_2_X=ON
         -D BUILD_opencv_python2=ON
         -D BUILD_opencv_python3=ON
+        -D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3
         -D CMAKE_INSTALL_PREFIX=${PREFIX}
         -D OPENCV_EXTRA_MODULES_PATH=/tmp/build_opencv/opencv_contrib/modules
         -D WITH_CUDA=ON
